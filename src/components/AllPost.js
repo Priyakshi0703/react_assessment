@@ -14,7 +14,7 @@ export default class AllPost extends React.Component {
     }
   
     componentDidMount() {
-      fetch("https://api.github.com/repos/facebook/react/pulls?access_token=a61da5ec341aa56434869b0e82cad407449d5947")
+      fetch("https://api.github.com/repos/facebook/react/pulls?access_token=e4ed75825d2ad3ffbe2bc88e403b6ed9dcdc62e0")
         .then(res => res.json())
         .then(
           (result) => {

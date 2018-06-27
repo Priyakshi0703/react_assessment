@@ -6,7 +6,8 @@ export default class Comments extends React.Component {
       this.state = {
         error: null,
         isLoaded: false,
-        comments: [0]
+        comments: [0],
+        reviewComments: []
       };
     }
   
@@ -14,7 +15,7 @@ export default class Comments extends React.Component {
          const {number} = this.props.location.state;
         console.log(number);
         
-      fetch("https://api.github.com/repos/facebook/react/pulls/"+number+"/comments?access_token=a61da5ec341aa56434869b0e82cad407449d5947")
+      fetch("https://api.github.com/repos/facebook/react/issues/"+number+"/comments?access_token=e4ed75825d2ad3ffbe2bc88e403b6ed9dcdc62e0")
         .then(res => res.json())
         .then(
           (result) => {
@@ -30,17 +31,39 @@ export default class Comments extends React.Component {
             });
           }
         )
-        
+
+        fetch("https://api.github.com/repos/facebook/react/pulls/"+number+"/comments?access_token=e4ed75825d2ad3ffbe2bc88e403b6ed9dcdc62e0")
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              reviewComments: result
+            });
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        )
        
     }
   
     render() {
-        console.log(this.props);
+        console.log(this.state);
         const comments =this.state.comments.map((comment, index) =>
         <li key={index}>
         {comment.body}</li>
       );
-        return( <div>{comments} </div>)
+      const reviewComments =this.state.reviewComments.map((comment, index) =>
+      <li key={index}>
+      {comment.body}</li>
+    );
+        return( <div>{comments}
+        {reviewComments}
+         </div>)
 
     
     }
